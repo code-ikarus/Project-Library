@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Library</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="container">
+
+    <header>
+      <div class="header-logo">
+        <img src="logo/book-svgrepo-com.svg" alt="book">
+      </div>
+      <div class="header-text">
+      <h1>Your Personal Library</h1>
+      <h3>Track your progress</h3>
+      </div>
+    </header>
+    
+  
+      <button id="add-book-btn">+</button>
+
+    
+
+    <div id="card-grid">
+    </div>
+
+    <div id="modal-container" class="hidden">
+      
+      <div id="modal-box">
+        <span class="exit-button">X</span>
+        <form>
+          <div class="input-group">
+            <label for="book-name">Book Name</label>
+            <input type="text" name="book-name" id="book-name" class="book-input" placeholder="Reverend Insanity">
+          </div>
+
+          <div class="input-group">
+            <label for="author-name">Author name</label>
+            <input type="text" name="author-name" id="author-name" class="author-input" placeholder="Gu Zhen Ren">
+          </div>
+
+          <div class="input-group">
+            <label for="pages-amount">Number of pages</label>
+            <input type="number" name="pages-amount" id="pages-amount" class="number-input" placeholder="356">
+          </div>
+
+          <div id="modal-btns">
+            <button class="add-btn" type="submit">Add book</button>
+            <button class="cancel-btn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
