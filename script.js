@@ -4,9 +4,6 @@ const closeModalBtn = document.querySelector('.exit-button');
 const cancelModalBtn = document.querySelector('.cancel-btn');
 const addBookForm = document.querySelector('#modal-box form');
 
-
-const myLibrary = new Library();
-
 //refactored to use class 
 class Book {
 
@@ -15,12 +12,16 @@ constructor(title, author, pages, isRead){
   this.author = author;
   this.pages = pages;
   this.isRead = isRead;
-  this.id = crypto.randomUUID();
+    this.id = (typeof crypto.randomUUID === 'function')
+    ? crypto.randomUUID()
+    : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
  toggleReadStatus(){
   this.isRead = !this.isRead;
  }
 }
+
+
 
 class Library{
   constructor(){
@@ -46,7 +47,7 @@ class Library{
 }
 
 
-
+const myLibrary = new Library();
 // show and hide the modal
 
 function showModal(){
