@@ -5,29 +5,47 @@ const cancelModalBtn = document.querySelector('.cancel-btn');
 const addBookForm = document.querySelector('#modal-box form');
 
 
+const myLibrary = new Library();
 
-//the array that holds all the books
-const myLibrary = [];
+//refactored to use class 
+class Book {
 
-//the constructor for creating new book objects
-function Book(title, author, pages, isRead){
+constructor(title, author, pages, isRead){
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.isRead = isRead;
   this.id = crypto.randomUUID();
 }
-
-//a function on the book's prototype that can toggle its read status
-Book.prototype.toggleReadStatus = function(){
-  this.isRead = !this.isRead; //flips the boolean value
+ toggleReadStatus(){
+  this.isRead = !this.isRead;
+ }
 }
 
-//function to add a new book to the library array
-function addBookToLibrary(title, author, pages, isRead){
-  const newBook = new Book(title, author, pages, isRead)
-  myLibrary.push(newBook);
+class Library{
+  constructor(){
+    this.books = []
+  }
+
+  addBook(title, author, pages, isRead){
+    const newBook = new Book(title, author, pages, isRead);
+    this.books.push(newBook)
+  }
+
+  removeBook(bookId){
+    const bookIndex = this.books.findIndex(book => book.id === bookId);
+    if (bookIndex > -1){
+      this.books.splice(bookIndex, 1);
+    }
+  }
+
+   findBook(bookId) {
+    return this.books.find(book => book.id === bookId);
+  }
+
 }
+
+
 
 // show and hide the modal
 
@@ -57,7 +75,7 @@ addBookForm.addEventListener('submit', (event) =>{
   const author = document.getElementById('author-name').value;
   const pages = document.getElementById('pages-amount').value;
 
-  addBookToLibrary(title, author, pages, false);
+  myLibrary.addBook(title, author, pages, false);
   //update the display to show the new book
   displayLibrary();
   // close the modal
@@ -70,7 +88,7 @@ function displayLibrary(){
   cardGrid.innerHTML = '';
 
   // loop through each book in the library array
-  myLibrary.forEach(book => {
+  myLibrary.books.forEach(book => {
   // creating the card and its elements matching my html structure
     const card = document.createElement('div');
     card.className = 'card';
@@ -115,13 +133,13 @@ function displayLibrary(){
 
     // add event listeners to the buttons on THIS card 
     removeBtn.addEventListener('click', () => {
-      const bookIndex = myLibrary.findIndex(b => b.id === book.id);
-      myLibrary.splice(bookIndex, 1);
+      myLibrary.removeBook(book.id)
       displayLibrary() //refresh the display
     })
 
     toggleReadBtn.addEventListener('click', () =>{
-      book.toggleReadStatus(); //use the prototype method
+      const bookToToggle = myLibrary.findBook(book.id);
+      bookToToggle.toggleReadStatus();
       displayLibrary(); 
     })
 
@@ -129,6 +147,6 @@ function displayLibrary(){
   })
 }
 
-addBookToLibrary("Shadow Slave", "Guiltythree", "2591", false);
-addBookToLibrary("A Regressor's Tale of Cultivation", "NeverluckySMILE", "810", true);
+myLibrary.addBook("Shadow Slave", "Guiltythree", "2591", false);
+myLibrary.addBook("A Regressor's Tale of Cultivation", "NeverluckySMILE", "810", true);
 displayLibrary();
