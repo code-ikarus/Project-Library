@@ -50,6 +50,11 @@ class Library{
 const myLibrary = new Library();
 // show and hide the modal
 
+function clearFormErrors() {
+  const errorMessages = addBookForm.querySelectorAll('.error-message');
+  errorMessages.forEach(msg => msg.textContent = '');
+}
+
 function showModal(){
   modalContainer.classList.remove('hidden');
 }
@@ -70,16 +75,42 @@ cancelModalBtn.addEventListener('click', (event) =>{
 
 addBookForm.addEventListener('submit', (event) =>{
   event.preventDefault() // stops the form from refreshing the page
-
+  clearFormErrors();
   //get the values from the form inputs
-  const title = document.getElementById('book-name').value;
-  const author = document.getElementById('author-name').value;
-  const pages = document.getElementById('pages-amount').value;
+  const titleInput = document.getElementById('book-name');
+  const authorInput = document.getElementById('author-name');
+  const pagesInput = document.getElementById('pages-amount');
+  const isReadInput = document.getElementById('is-read-checkbox');
 
-  myLibrary.addBook(title, author, pages, false);
-  //update the display to show the new book
+  const title = titleInput.value.trim();
+  const author = authorInput.value.trim();
+  const pages = pagesInput.value.trim();
+  const isRead = isReadInput.Checked;
+
+  let isValid = true;
+
+  if(title === ''){
+    titleInput.nextElementSibling.textContent = 'Please enter a book title.';
+    isValid = false;
+  }
+
+  if (author === ''){
+    authorInput.nextElementSibling.textContent = 'Please enter an author name.';
+    isValid = false;
+  }
+
+  const pagesInt = parseInt(pages);
+  if (isNaN(pagesInt) || pagesInt <= 0) {
+    pagesInput.nextElementSibling.textContent = 'Please enter a valid number of pages.';
+    isValid = false;
+  }
+
+  if (!isValid) {
+    return;
+  }
+
+  myLibrary.addBook(title, author, pagesInt, isRead);
   displayLibrary();
-  // close the modal
   hideModal()
 });
 

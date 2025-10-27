@@ -206,3 +206,10 @@ header{
 #modal-btns button:hover{
   background-color: #4b4b4b;
 }
+
+.error-message {
+  color: #d93025; /* A standard error red */
+  font-size: 0.9em;
+  display: block; /* Puts it on its own line */
+  margin-top: 4px;
+}
